@@ -23,6 +23,9 @@
             <div class="alert alert-danger" id="msg-stop" role="alert">
               Buscando Informacion....
             </div>
+            <div class="alert alert-light p-0" id="cod_seand" role="alert">
+              Informacion enviada <label id="cod"></label>
+            </div>
             <table id="content-info" class="table">
                 <tbody>
                   <tr>
@@ -65,6 +68,9 @@
           <div class="mt-4" id="result-update">
             <div class="" id="msg-stop" role="alert">
               Buscando Informacion....
+            </div>
+            <div class="alert alert-light p-0" id="cod_seand" role="alert">
+              Informacion enviada <label id="cod"></label>
             </div>
             <table id="content-info" class="table">
               <thead>
@@ -122,6 +128,7 @@ $(document).ready(function(){
       var check_null = text_search.match(/[0-9]/gi);
       console.log(check_null);
       var removeClassmsg=$('#result-search #msg-stop').removeClass(alertDance).removeClass(alertSuccess);
+      $(`${content_resut} #cod_seand`).css('display','none');
       if(check_null !== null){
         clean_text = check_null.join("");
         console.log(clean_text);
@@ -135,10 +142,13 @@ $(document).ready(function(){
             $(`${content_resut} #msg-stop`).addClass(alertSuccess).css('display','block').html(textBuscar);
           },
           success:  function (response) {
+            console.log(response);
             removeClassmsg;
             if(response.status ==="success"){
               $(`${content_resut} #msg-stop`).css('display','none');
               $(`${content_resut} #content-info`).css('display','block');
+              $(`${content_resut} #cod_seand`).css('display','block');
+              $(`${content_resut} #cod_seand #cod`).text(clean_text);
               var infoData= response.data;
               $(`${content_resut} #content-info #name`).text(infoData.name);
               $(`${content_resut} #content-info #email`).text(infoData.email);
@@ -168,6 +178,7 @@ $(document).ready(function(){
       var check_null_type = type_new.match(/[A-Za-z]/gi);
       var check_null_doc = doc_new.match(/[A-Za-z0-9]/gi);
       var removeClassmsg=$('#result-update #msg-stop').removeClass(alertDance).removeClass(alertSuccess);
+      $(`${content_resut} #cod_seand`).css('display','none');
       if(check_null !== null || check_null_type !== null || check_null_doc !== null){
         var codigo = check_null.join('');
         var new_type = check_null_type.join('');
@@ -181,10 +192,13 @@ $(document).ready(function(){
             $(`${content_resut} #msg-stop`).addClass(alertSuccess).css('display','block').html(textBuscar);
           },
           success:  function (response) {
+            console.log(response);
             removeClassmsg;
             if(response.status ==="success"){
               $(`${content_resut} #msg-stop`).addClass(alertSuccess).html(response.msg);
               $(`${content_resut} #content-info`).css('display','block');
+              $(`${content_resut} #cod_seand`).css('display','block');
+              $(`${content_resut} #cod_seand #cod`).text(codigo);
               var infoData= response.data;
               $(`${content_resut} #content-info #name`).text(infoData.user.name);
               $(`${content_resut} #content-info #email`).text(infoData.user.email);
@@ -212,7 +226,10 @@ $(document).ready(function(){
     display: inline-table;
     width: 100%;
   }
-  #msg-stop,#content-info{
+  #cod{
+    font-weight: bold;
+  }
+  #msg-stop,#content-info,#cod_seand{
     display: none;
   }
 </style>

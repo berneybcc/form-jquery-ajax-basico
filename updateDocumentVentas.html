@@ -23,7 +23,7 @@
             <div class="alert alert-danger" id="msg-stop" role="alert">
               Buscando Informacion....
             </div>
-            <div class="alert alert-light" id="cod_seand" role="alert">
+            <div class="alert alert-light p-0" id="cod_seand" role="alert">
               Informacion enviada <label id="cod"></label>
             </div>
             <table id="content-info" class="table">
@@ -69,7 +69,7 @@
             <div class="" id="msg-stop" role="alert">
               Buscando Informacion....
             </div>
-            <div class="alert alert-light" id="cod_seand" role="alert">
+            <div class="alert alert-light p-0" id="cod_seand" role="alert">
               Informacion enviada <label id="cod"></label>
             </div>
             <table id="content-info" class="table">
@@ -225,6 +225,9 @@ $(document).ready(function(){
   thead,tbody{
     display: inline-table;
     width: 100%;
+  }
+  #cod{
+    font-weight: bold;
   }
   #msg-stop,#content-info,#cod_seand{
     display: none;
