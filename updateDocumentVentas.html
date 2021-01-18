@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Update || Document</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="h1 mb-4">Actualizar Documento en las Ventas</h1>
+      <div class="row">
+        <div class="card p-4 m-1 col-sm">
+          <h2>Buscar datos del usuario</h2>
+          <form action="#" method="POST" id="from-search">
+            <div class="mb-3">
+              <label for="search-text-cod" class="form-label">Codigo de Trasaccion</label>
+              <input type="text" class="form-control" id="search-text-cod">
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+          </form>
+          <div class="mt-4" id="result-search">
+            <div class="alert alert-danger" id="msg-stop" role="alert">
+              Buscando Informacion....
+            </div>
+            <table id="content-info" class="table">
+                <tbody>
+                  <tr>
+                    <th>Nombre</th>
+                    <td><label id="name">...</label></td>
+                  </tr>
+                  <tr>
+                    <th>Email</th>
+                    <td><label for="" id="email">...</label></td>
+                  </tr>
+                  <tr>
+                    <th>Tipo Documento</th>
+                    <td><label for="" id="tip-doc">...</label></td>
+                  </tr>
+                  <tr>
+                    <th>Documento</th>
+                    <td><label for="" id="doc">...</label></td>
+                  </tr>
+                </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card p-4 m-1 col-sm">
+          <h2>Actualizar datos</h2>
+          <form  action="#" method="POST" id="from-update">
+            <div class="mb-3">
+              <label for="update-text-cod" class="form-label" required>Codigo de Trasaccion</label>
+              <input type="text" class="form-control" id="update-text-cod">
+            </div>
+            <div class="mb-3">
+              <label for="update-tip-doc" class="form-label" required>Tipo de Documento Nuevo</label>
+              <input type="text" class="form-control" id="update-tip-doc">
+            </div>
+            <div class="mb-3">
+              <label for="update-doc" class="form-label" required>Documento Nuevo</label>
+              <input type="text" class="form-control" id="update-doc">
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+          </form>
+          <div class="mt-4" id="result-update">
+            <div class="" id="msg-stop" role="alert">
+              Buscando Informacion....
+            </div>
+            <table id="content-info" class="table">
+              <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>Nombre</th>
+                  <td><label id="name">...</label></td>
+                </tr>
+                <tr>
+                  <th>Email</th>
+                  <td><label for="" id="email">...</label></td>
+                </tr>
+                <tr>
+                  <th>Tipo Documento</th>
+                  <td><label for="" id="tip-doc">...</label></td>
+                </tr>
+                <tr>
+                  <th>Documento</th>
+                  <td><label for="" id="doc">...</label></td>
+                </tr>
+                <tr>
+                  <th>Ventas</th>
+                  <td><label for="" id="ventas">...</label></td>
+                </tr>
+                <tr>
+                  <th>Pines Redimidos</th>
+                  <td><label for="" id="pines">...</label></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<script type="text/javascript">
+$(document).ready(function(){
+  const urlserver="https://segbeta.eltiempo.com";
+  const tokenvalue="b3JxdWVzdGFkb3IyMDIw";
+  const alertDance="alert alert-danger";
+  const alertSuccess="alert alert-success";
+  const textBuscar=" Buscando Informacion....";
+  //Busca la informacion del usuario
+  $('#from-search').submit(function(){
+      var formSeand= $(this);
+      var content_resut = "#result-search";
+      var text_search = $('#search-text-cod').val();
+      console.log(text_search);
+      var check_null = text_search.match(/[0-9]/gi);
+      console.log(check_null);
+      var removeClassmsg=$('#result-search #msg-stop').removeClass(alertDance).removeClass(alertSuccess);
+      if(check_null !== null){
+        clean_text = check_null.join("");
+        console.log(clean_text);
+        console.log(`${urlserver}-${clean_text}`);
+        $.ajax({
+          url:   `${urlserver}/services-piano/change/user/search?cod_trans=${clean_text}`,
+          headers: { 'token-service': tokenvalue },
+          type:  'get',
+          beforeSend: function (response) {
+            $(`${content_resut} #content-info`).css('display','none');
+            $(`${content_resut} #msg-stop`).addClass(alertSuccess).css('display','block').html(textBuscar);
+          },
+          success:  function (response) {
+            removeClassmsg;
+            if(response.status ==="success"){
+              $(`${content_resut} #msg-stop`).css('display','none');
+              $(`${content_resut} #content-info`).css('display','block');
+              var infoData= response.data;
+              $(`${content_resut} #content-info #name`).text(infoData.name);
+              $(`${content_resut} #content-info #email`).text(infoData.email);
+              $(`${content_resut} #content-info #tip-doc`).text(infoData.tipo_document);
+              $(`${content_resut} #content-info #doc`).text(infoData.documet);
+            }else{
+              $(`${content_resut} #msg-stop`).addClass(alertDance).html(response.msg);
+            }
+            formSeand.trigger("reset");
+          }
+        });
+      }else{
+        $(`${content_resut} #msg-stop`).addClass(alertDance).css('display','block').html("Se requiere Codigo de transaccion");
+        $(`${content_resut} #content-info`).css('display','none');
+      }
+      return false;
+  })
+  //Actualiza la informacion en la venta
+  $('#from-update').submit(function(){
+      var formSeand= $(this);
+      var content_resut = "#result-update";
+      var text_cod = $('#update-text-cod').val();
+      var type_new = $('#update-tip-doc').val();
+      var doc_new = $('#update-doc').val();
+      console.log(text_cod);
+      var check_null = text_cod.match(/[0-9]/gi);
+      var check_null_type = type_new.match(/[A-Za-z]/gi);
+      var check_null_doc = doc_new.match(/[A-Za-z0-9]/gi);
+      var removeClassmsg=$('#result-update #msg-stop').removeClass(alertDance).removeClass(alertSuccess);
+      if(check_null !== null || check_null_type !== null || check_null_doc !== null){
+        var codigo = check_null.join('');
+        var new_type = check_null_type.join('');
+        var new_doc = check_null_doc.join('');
+        $.ajax({
+          url:   `${urlserver}/services-piano/change/user?cod_trans=${codigo}&type_new=${new_type}&document_new=${new_doc}`,
+          headers: { 'token-service': tokenvalue },
+          type:  'get',
+          beforeSend: function (response) {
+            $(`${content_resut} #content-info`).css('display','none');
+            $(`${content_resut} #msg-stop`).addClass(alertSuccess).css('display','block').html(textBuscar);
+          },
+          success:  function (response) {
+            removeClassmsg;
+            if(response.status ==="success"){
+              $(`${content_resut} #msg-stop`).addClass(alertSuccess).html(response.msg);
+              $(`${content_resut} #content-info`).css('display','block');
+              var infoData= response.data;
+              $(`${content_resut} #content-info #name`).text(infoData.user.name);
+              $(`${content_resut} #content-info #email`).text(infoData.user.email);
+              $(`${content_resut} #content-info #tip-doc`).text(infoData.user.tipo_document);
+              $(`${content_resut} #content-info #doc`).text(infoData.user.documet);
+              $(`${content_resut} #content-info #ventas`).text(infoData.ventas.join(','));
+              $(`${content_resut} #content-info #pines`).text(infoData.pines.join(','));
+            }else{
+              $(`${content_resut} #msg-stop`).addClass(alertDance).html(response.msg);
+            }
+            formSeand.trigger("reset");
+          }
+        });
+      }else{
+        $(`${content_resut} #msg-stop`).addClass(alertDance).css('display','block').html("Se requiere informacion completa");
+        $(`${content_resut} #content-info`).css('display','none');
+      }
+      return false;
+    })
+  }
+)
+</script>
+<style>
+  thead,tbody{
+    display: inline-table;
+    width: 100%;
+  }
+  #msg-stop,#content-info{
+    display: none;
+  }
+</style>
